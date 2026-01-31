@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>YT Automation Tool</title>
+</head>
+<body>
+
+<h2>YouTube Automation Tool</h2>
+
+<label>Niche Video</label><br>
+<input id="niche" placeholder="contoh: fakta unik"><br><br>
+
+<label>Durasi</label><br>
+<select id="duration">
+  <option value="short">YouTube Shorts</option>
+  <option value="long">Video Panjang</option>
+</select><br><br>
+
+<button onclick="generate()">Generate Script</button><br><br>
+
+<textarea id="result" rows="12" cols="60"></textarea>
+
+<script>
+function generate() {
+  const niche = document.getElementById("niche").value;
+  const duration = document.getElementById("duration").value;
+
+  fetch("http://localhost:3000/generate-script", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ niche, duration })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").value = data.script;
+  })
+  .catch(() => {
+    alert("Server belum jalan");
+  });
+}
+</script>
+
+</body>
+</html>

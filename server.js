@@ -1,43 +1,32 @@
 import express from "express";
 import cors from "cors";
-import fetch from "node-fetch";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 app.use(cors());
 app.use(express.json());
 
-// tampilkan index.html
+// ROUTE UTAMA (INI YANG TADI BELUM ADA)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.send("YT Automation Tool is running successfully 🚀");
 });
 
-// API generate script
-app.post("/generate-script", async (req, res) => {
-  const { niche, duration } = req.body;
+// CONTOH ROUTE GENERATE
+app.post("/generate", (req, res) => {
+  const { niche } = req.body;
 
-  const script = `Judul: ${niche.toUpperCase()}
+  if (!niche) {
+    return res.status(400).json({ error: "Niche is required" });
+  }
 
-Hook:
-Tahukah kamu tentang ${niche}? Simak sampai habis!
-
-Isi:
-Ini adalah video ${duration === "short" ? "YouTube Shorts" : "video panjang"} dengan topik ${niche}.
-Konten ini cocok untuk automation channel.
-
-Closing:
-Follow untuk konten menarik lainnya!`;
-
-  res.json({ script });
+  res.json({
+    title: `10 Fakta Menarik Tentang ${niche}`,
+    script: `Halo! Hari ini kita akan membahas tentang ${niche}. Jangan lupa subscribe!`
+  });
 });
+
+// PORT WAJIB RAILWAY
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
